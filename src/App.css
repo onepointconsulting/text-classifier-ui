@@ -31,3 +31,7 @@
     transform: rotate(360deg);
   }
 }
+
+.probabilities {
+  margin-top: 15px
+}
