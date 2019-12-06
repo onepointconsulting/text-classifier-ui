@@ -1,12 +1,11 @@
 import React from 'react';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
 import Rating from "react-rating";
 import {createURLWithParams} from "./functions/fetchSupport";
 import {AboutDialogue} from "./AboutComponent";
 
-class PredictComponent extends React.Component {
+class SentimentComponent extends React.Component {
 
     initialText = 'I really enjoyed the consultation with Dr. XYZ. The clinic was clean and uncluttered and the staff very professional.';
 
@@ -31,10 +30,7 @@ class PredictComponent extends React.Component {
             predictedStars: 0,
             errMessage: null,
             predictedProbabilities: [],
-            generatedText: null,
             displayAbout: false,
-            generatingText: false,
-            dots: '. . .'
         };
     }
 
@@ -96,41 +92,7 @@ class PredictComponent extends React.Component {
         return text.length > maxLength ? text.substring(0, maxLength - 3) + '...' : text;
     };
 
-    generateRandomText = (e) => {
-        this.generatingTextInterval = setInterval(() => {
-            this.setState({
-                dots: this.state.dots + " ."
-            })
-        }, 50);
-        const url = createURLWithParams('generate', {text: this.state.predictText});
-        this.setState({
-            predictedProbabilities: [],
-            generatingText: true
-        }, () => {
-            fetch(url)
-                .then((result) => result.json())
-                .then((json) => {
-                    this.setState({
-                        generatedText: json.text
-                    });
-                })
-                .catch((e) => {
-                    this.setState({
-                        errMessage: `Text generation request failed: ${e.toString()}`
-                    })
-                })
-                .finally(() => {
-                    this.setState({
-                        generatingText: false,
-                        dots: '. . .'
-                    }, () => {
-                        clearInterval(this.generatingTextInterval);
-                        console.log('this.generatingTextInterval cleared', this.generatingTextInterval)
-                    });
-                });
-        });
-        e.preventDefault();
-    };
+   
 
     render() {
         const hasPredictedProbabilities = this.state.predictedProbabilities.length > 0;
@@ -168,21 +130,7 @@ class PredictComponent extends React.Component {
                                 Predict
                             </Button>
                         </div>
-                        <div className="col-sm-10 text-right">
-                            <Button className="btn btn-info" onClick={this.generateRandomText}>
-                                Generate random text
-                            </Button>&nbsp;
-                            {this.state.generatedText ?
-                                <Button className="btn btn-light" onClick={() => {
-                                    this.setState({
-                                        generatedText: null
-                                    })
-                                }}>
-                                    Hide random text
-                                </Button>
-                                : ''
-                            }
-                        </div>
+                        
                     </div>
                 </Form>
                 {hasPredictedProbabilities ?
@@ -205,9 +153,7 @@ class PredictComponent extends React.Component {
                     : <></>
                 }
                 {this.renderProbabilities()}
-                {this.renderProbsLegend(hasPredictedProbabilities)}
-                {this.renderGeneratingText()}
-                {this.renderGeneratedText()}
+                {this.renderProbsLegend(hasPredictedProbabilities)}                
                 {this.renderErrorMessage()}
                 {this.renderAboutDialogue()}
             </div>
@@ -222,7 +168,6 @@ class PredictComponent extends React.Component {
                 this.setState({
                     predictedStars: json.pred_class,
                     predictedProbabilities: JSON.parse(json.prediction.replace(/.*?(\[.+?]).+/, "$1")),
-                    generatedText: null
                 });
             })
             .catch((e) => {
@@ -239,20 +184,7 @@ class PredictComponent extends React.Component {
         });
     };
 
-    renderGeneratedText = () => {
-        if (this.state.generatedText) {
-            return (
-                <div className="row">
-                    <div className="col-12">
-                        <br/>
-                        <Form.Label>Random text:</Form.Label>
-                        <Form.Control as="textarea" rows="5" value={this.state.generatedText}
-                                      onChange={this.handleChange}/>
-                    </div>
-                </div>
-            );
-        }
-    };
+  
 
     renderErrorMessage = () => {
         return (
@@ -272,22 +204,11 @@ class PredictComponent extends React.Component {
         );
     };
 
-    renderGeneratingText = () => {
-        if (this.state.generatingText) {
-            return (
-                <div className="row">
-                    <div className="col-12">
-                        <p>{this.state.dots}</p>
-                    </div>
-                </div>
-            )
-        }
-    };
-
+    
     closeAboutdialogue = () => {
         this.setState({displayAbout: false});
         console.log('test');
     }
 }
 
-export default PredictComponent;
+export default SentimentComponent;

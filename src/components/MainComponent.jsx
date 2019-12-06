@@ -1,5 +1,6 @@
 import React from 'react';
-import PredictComponent from "./PredictComponent";
+import SentimentComponent from "./SentimentComponent";
+import RandomTextComponent from "./RandomTextComponent";
 
 /**
  * Main component
@@ -11,7 +12,13 @@ export default class MainComponent extends React.Component {
 
     render() {
         return (
-            <PredictComponent />
+            <>
+                < SentimentComponent />
+                <br />
+                <br />
+                < RandomTextComponent />
+            </>
+
         )
     }
 }
