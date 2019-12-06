@@ -102,7 +102,7 @@ class PredictComponent extends React.Component {
                 dots: this.state.dots + " ."
             })
         }, 50);
-        const url = createURLWithParams('generate', {text: this.state.predictText, n_words: "200"});
+        const url = createURLWithParams('generate', {text: this.state.predictText});
         this.setState({
             predictedProbabilities: [],
             generatingText: true
