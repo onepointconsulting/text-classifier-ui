@@ -34,11 +34,17 @@ class SentimentComponent extends React.Component {
         };
     }
 
+    loopProbabilities = (renderFunc) => {
+        return (
+            this.state.predictedProbabilities.map(renderFunc)
+        )
+    };
+
     renderProbabilities() {
         return (
             <div className="row">
                 <div className="col-1" style={{maxWidth: "12px"}}>
-                    {this.state.predictedProbabilities.map((prob, i) => {
+                    {this.loopProbabilities((prob, i) => {
                         return (
                             <div key={`${i}`}>{i + 1}</div>
                         );
@@ -48,7 +54,7 @@ class SentimentComponent extends React.Component {
                     {this.state.predictedProbabilities.map((prob, i) => {
                         const percentage = prob * 100.0;
                         return (
-                            <div
+                            <div key={i}
                                 style={{
                                     width: '100%',
                                     backgroundColor: '#dadada',
@@ -57,12 +63,13 @@ class SentimentComponent extends React.Component {
                             >
                                 <div key={`${i}percent`} style={{
                                     width: `${percentage}%`,
+                                    whiteSpace: 'nowrap',
                                     backgroundColor: prob > .66 ? this.highProbColor
                                         : prob > .33 ? this.mediumProbColor
                                             : this.lowProbColor
                                 }}
                                      dangerouslySetInnerHTML={{
-                                         __html: `${percentage}%`
+                                         __html: `${percentage.toFixed(2)} %`
                                      }}
                                 />
                             </div>
@@ -114,8 +121,8 @@ class SentimentComponent extends React.Component {
                     <Form.Group controlId="examples">
                         <Form.Label>Select example review</Form.Label>
                         <Form.Control as="select" onChange={(e) => this.setState({predictText: e.target.value})}>
-                            {this.sampleTexts.map(text =>
-                                <option value={text}>{this.ellipsis(text, 150)}</option>
+                            {this.sampleTexts.map((text, i) =>
+                                <option key={i} value={text}>{this.ellipsis(text, 150)}</option>
                             )}
                         </Form.Control>
                     </Form.Group>
@@ -165,9 +172,13 @@ class SentimentComponent extends React.Component {
         fetch(url)
             .then((result) => result.json())
             .then((json) => {
+                console.log('json', json);
+                const probabilitiesStr = json.prediction.replace(/.*?(\[.+?]).+/, "$1");
+                const predictedProbabilities = JSON.parse(probabilitiesStr);
+                console.log('predictedProbabilities', predictedProbabilities);
                 this.setState({
                     predictedStars: json.pred_class,
-                    predictedProbabilities: JSON.parse(json.prediction.replace(/.*?(\[.+?]).+/, "$1")),
+                    predictedProbabilities: predictedProbabilities,
                 });
             })
             .catch((e) => {

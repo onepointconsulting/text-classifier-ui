@@ -29,10 +29,6 @@ class RandomTextComponent extends React.Component {
         };
     }
 
-   
-
-    
-
     ellipsis = (text, maxLength) => {
         return text.length > maxLength ? text.substring(0, maxLength - 3) + '...' : text;
     };
@@ -58,8 +54,8 @@ class RandomTextComponent extends React.Component {
                     <Form.Group controlId="examples">
                         <Form.Label>Select example review</Form.Label>
                         <Form.Control as="select" onChange={(e) => this.setState({ predictText: e.target.value })}>
-                            {this.sampleTexts.map(text =>
-                                <option value={text}>{this.ellipsis(text, 150)}</option>
+                            {this.sampleTexts.map((text, i) =>
+                                <option key={i} value={text}>{this.ellipsis(text, 150)}</option>
                             )}
                         </Form.Control>
                     </Form.Group>
