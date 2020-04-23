@@ -9,13 +9,7 @@ class RandomTextComponent extends React.Component {
 
     initialText = textSamples[0];
 
-    sampleTexts = [this.initialText,
-        textSamples[1],
-        textSamples[2],
-        textSamples[3],
-        textSamples[4],
-        textSamples[5]
-    ];
+    sampleTexts = [...textSamples];
 
 
     constructor(props) {
