@@ -3,17 +3,18 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { createURLWithParams } from "./functions/fetchSupport";
 import { AboutDialogue } from "./AboutComponent";
+import {textSamples} from "./textSamples";
 
 class RandomTextComponent extends React.Component {
 
-    initialText = 'I really enjoyed the consultation with Dr. XYZ. The clinic was clean and uncluttered and the staff very professional.';
+    initialText = textSamples[0];
 
     sampleTexts = [this.initialText,
-        'This is a very good product. I would highly recommend it',
-        'This product is not fit for purpose. It is a complete disapointment. Save your money and buy something else.',
-        'This is not the best product, but at the same time it is also not the worst one. I will do the job, but has not the wow factor.',
-        'I bought this book to understand about the "technical" thought process in Ansel\'s mind. But was disappointed to see that all that has been explained is about the stories behind those photographs. But like the print quality of the book and the photographs!',
-        'This is truly a fantastic resource for those who want to "step into" the mind of a master photographer. On a different note, it is also an interesting historical perspective from somebody who has lived through the technological changes in photography and several different "movements" in art. Beyond just providing you with basic "EXIF" or exposure information on his shots, Adams has provided insight into, among other things, what lead up to "seeing" the shot, how he considered technical aspects (especially as it related to his Zone System), how he felt about the scene and his surroundings, and what he did in the darkroom in order to bring out the best in the shot. You also get a very good sense of Adams\' philosophy on photography and just life in general.'
+        textSamples[1],
+        textSamples[2],
+        textSamples[3],
+        textSamples[4],
+        textSamples[5]
     ];
 
 
